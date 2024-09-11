@@ -13,11 +13,7 @@
     - out: continuos
       - CTFT: aperiodic
       - DTFT: periodic
-    - CTFT
-      - out: continuos aperiodic
-    - DTFT
-      - out: continuos periodic
-      - DFT
-        subset of DTFT, for Practical computation, uniform sample w
-        - in: periodic(real/assume(aperiodic)) finite length
-        - out: discrete
+  - Discrete Fourire Transform (DFT)
+    subset of DTFT, for Practical computation, uniform sample w
+    - in: periodic(real/assume(aperiodic)) finite length
+    - out: discrete
