@@ -7822,14 +7822,6 @@ $$$$
 \therefore
 \sum_{i} (x_i \cdot CPU_i)(1-0.5c_i+2s_i)
 \leq 100
-$$<ul>
-<li>Individual CPU Load</li>
-</ul>
-$$Actual\ Load \leq Ideal\ Load$$$$
-(x_i \cdot CPU_i)
-- (c_i \cdot x_i \cdot 0.5 CPU_i)
-+ (s_i \cdot x_i \cdot 2 CPU_i)
-\leq CPU_i
 $$<p>; $CPU_i$ is CPU Load of feature i</p>
 <ul>
 <li>Total Storage Load</li>
@@ -7843,15 +7835,6 @@ $$$$
 \therefore
 \sum_{i} (x_i \cdot Storage_i)(1-0.5c_i-0.5s_i)
 \leq 100
-$$<ul>
-<li>Individual Storage Load</li>
-</ul>
-$$Actual\ Load \leq Ideal\ Load$$$$
-(x_i \cdot Storage_i)
-- (c_i \cdot x_i \cdot 0.5Storage_i)
-- (s_i \cdot x_i \cdot 0.5Storage_i)
-\leq
-Storage_i
 $$<p>; $Storage_i$ is storage load of feature i</p>
 <ul>
 <li>Mandatory features</li>
@@ -7916,20 +7899,10 @@ $$s_i + c_i \leq 1$$
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Constraints</span>
 
 <span class="c1"># CPU Load</span>
-<span class="c1"># individual</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-    <span class="n">cpu_load</span> <span class="o">=</span> <span class="p">(</span><span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
-    <span class="n">prob</span> <span class="o">+=</span> <span class="n">cpu_load</span> <span class="o">&lt;=</span> <span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
-<span class="c1"># total</span>
-<span class="n">prob</span> <span class="o">+=</span> <span class="n">pulp</span><span class="o">.</span><span class="n">lpSum</span><span class="p">([</span><span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">+</span> <span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">100</span>
+<span class="n">prob</span> <span class="o">+=</span> <span class="n">pulp</span><span class="o">.</span><span class="n">lpSum</span><span class="p">([</span><span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">+</span> <span class="n">cpu</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">100</span>
 
 <span class="c1"># Storage Load</span>
-<span class="c1"># individual</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-    <span class="n">storage_load</span> <span class="o">=</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
-    <span class="n">prob</span> <span class="o">+=</span> <span class="n">storage_load</span> <span class="o">&lt;=</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
-<span class="c1"># total</span>
-<span class="n">prob</span> <span class="o">+=</span> <span class="n">pulp</span><span class="o">.</span><span class="n">lpSum</span><span class="p">([</span><span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">100</span>
+<span class="n">prob</span> <span class="o">+=</span> <span class="n">pulp</span><span class="o">.</span><span class="n">lpSum</span><span class="p">([</span><span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">storage</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">100</span>
 
 <span class="c1"># Mandatory features: A and J</span>
 <span class="n">prob</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="s1">'A'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
@@ -7984,98 +7957,81 @@ $$s_i + c_i \leq 1$$
 Version: 2.10.3 
 Build Date: Dec 15 2019 
 
-command line - /Users/pupipatsingkhorn/miniconda3/envs/datascience/lib/python3.9/site-packages/pulp/solverdir/cbc/osx/64/cbc /var/folders/m6/fz_qjnl51s70hy69d_st2z240000gn/T/9007824fe965472fab77249139f4e57f-pulp.mps -max -timeMode elapsed -branch -printingOptions all -solution /var/folders/m6/fz_qjnl51s70hy69d_st2z240000gn/T/9007824fe965472fab77249139f4e57f-pulp.sol (default strategy 1)
+command line - /Users/pupipatsingkhorn/miniconda3/envs/datascience/lib/python3.9/site-packages/pulp/solverdir/cbc/osx/64/cbc /var/folders/m6/fz_qjnl51s70hy69d_st2z240000gn/T/45aa897acc4d41018b92dfb0b39974f9-pulp.mps -max -timeMode elapsed -branch -printingOptions all -solution /var/folders/m6/fz_qjnl51s70hy69d_st2z240000gn/T/45aa897acc4d41018b92dfb0b39974f9-pulp.sol (default strategy 1)
 At line 2 NAME          MODEL
 At line 3 ROWS
-At line 61 COLUMNS
-At line 313 RHS
-At line 370 BOUNDS
-At line 398 ENDATA
-Problem MODEL has 56 rows, 27 columns and 179 elements
+At line 43 COLUMNS
+At line 241 RHS
+At line 280 BOUNDS
+At line 308 ENDATA
+Problem MODEL has 38 rows, 27 columns and 125 elements
 Coin0008I MODEL read with 0 errors
 Option for timeMode changed from cpu to elapsed
-Continuous objective value is 79.7733 - 0.00 seconds
+Continuous objective value is 82.95 - 0.00 seconds
 Cgl0002I 6 variables fixed
-Cgl0003I 2 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
-Cgl0004I processed model has 10 rows, 16 columns (16 integer (16 of which binary)) and 55 elements
+Cgl0003I 1 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0004I processed model has 11 rows, 18 columns (18 integer (18 of which binary)) and 62 elements
 Cutoff increment increased from 1e-05 to 0.04995
-Cbc0038I Initial state - 1 integers unsatisfied sum - 0.3125
-Cbc0038I Pass   1: suminf.    0.31250 (1) obj. -68.25 iterations 2
-Cbc0038I Solution found of -13.25
-Cbc0038I Rounding solution of -33.25 is better than previous of -13.25
-
-Cbc0038I Before mini branch and bound, 15 integers at bound fixed and 0 continuous
-Cbc0038I Mini branch and bound did not improve solution (0.02 seconds)
-Cbc0038I Round again with cutoff of -36.8
-Cbc0038I Pass   2: suminf.    0.31250 (1) obj. -68.25 iterations 0
-Cbc0038I Pass   3: suminf.    0.29438 (1) obj. -36.8 iterations 1
-Cbc0038I Pass   4: suminf.    0.29438 (1) obj. -36.8 iterations 0
-Cbc0038I Pass   5: suminf.    0.29438 (1) obj. -36.8 iterations 0
-Cbc0038I Pass   6: suminf.    0.27578 (2) obj. -36.8 iterations 3
-Cbc0038I Pass   7: suminf.    0.27578 (2) obj. -36.8 iterations 1
-Cbc0038I Pass   8: suminf.    0.25000 (1) obj. -68.25 iterations 1
-Cbc0038I Pass   9: suminf.    0.35688 (1) obj. -36.8 iterations 1
-Cbc0038I Pass  10: suminf.    0.10688 (1) obj. -36.8 iterations 2
-Cbc0038I Pass  11: suminf.    0.10688 (1) obj. -36.8 iterations 2
-Cbc0038I Pass  12: suminf.    0.12500 (1) obj. -38.25 iterations 1
-Cbc0038I Pass  13: suminf.    0.42771 (2) obj. -36.8 iterations 3
-Cbc0038I Pass  14: suminf.    0.42771 (2) obj. -36.8 iterations 1
-Cbc0038I Pass  15: suminf.    0.43750 (1) obj. -57.75 iterations 1
-Cbc0038I Pass  16: suminf.    0.30063 (1) obj. -36.8 iterations 1
-Cbc0038I Pass  17: suminf.    0.58047 (2) obj. -36.8 iterations 2
-Cbc0038I Pass  18: suminf.    0.58047 (2) obj. -36.8 iterations 1
-Cbc0038I Pass  19: suminf.    0.41404 (4) obj. -36.8 iterations 5
-Cbc0038I Pass  20: suminf.    0.09438 (1) obj. -36.8 iterations 4
-Cbc0038I Pass  21: suminf.    0.12500 (1) obj. -39.25 iterations 2
-Cbc0038I Pass  22: suminf.    0.20000 (1) obj. -57.2 iterations 8
-Cbc0038I Solution found of -56.75
-Cbc0038I Rounding solution of -61.75 is better than previous of -56.75
-
-Cbc0038I Before mini branch and bound, 6 integers at bound fixed and 0 continuous
-Cbc0038I Full problem 10 rows 16 columns, reduced to 2 rows 4 columns
-Cbc0038I Mini branch and bound did not improve solution (0.02 seconds)
-Cbc0038I Round again with cutoff of -63.1
-Cbc0038I Reduced cost fixing fixed 9 variables on major pass 3
-Cbc0038I Pass  23: suminf.    0.31250 (1) obj. -68.25 iterations 0
-Cbc0038I Pass  24: suminf.    0.37687 (1) obj. -63.1 iterations 1
-Cbc0038I Pass  25: suminf.    0.37687 (1) obj. -63.1 iterations 0
-Cbc0038I Pass  26: suminf.    0.25000 (1) obj. -68.25 iterations 2
-Cbc0038I Pass  27: suminf.    0.31438 (1) obj. -63.1 iterations 1
-Cbc0038I Pass  28: suminf.    0.25000 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  29: suminf.    0.25000 (1) obj. -68.25 iterations 0
-Cbc0038I Pass  30: suminf.    0.25000 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  31: suminf.    0.25000 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  32: suminf.    0.83244 (2) obj. -63.1 iterations 3
-Cbc0038I Pass  33: suminf.    0.25000 (1) obj. -68.25 iterations 3
-Cbc0038I Pass  34: suminf.    0.83244 (2) obj. -63.1 iterations 3
-Cbc0038I Pass  35: suminf.    0.83244 (2) obj. -63.1 iterations 1
-Cbc0038I Pass  36: suminf.    0.83244 (2) obj. -63.1 iterations 1
-Cbc0038I Pass  37: suminf.    0.43938 (1) obj. -63.1 iterations 4
-Cbc0038I Pass  38: suminf.    0.37500 (1) obj. -68.25 iterations 2
-Cbc0038I Pass  39: suminf.    0.43937 (1) obj. -63.1 iterations 1
-Cbc0038I Pass  40: suminf.    0.83244 (2) obj. -63.1 iterations 4
-Cbc0038I Pass  41: suminf.    0.96101 (2) obj. -63.1 iterations 3
-Cbc0038I Pass  42: suminf.    0.49813 (1) obj. -63.1 iterations 5
-Cbc0038I Pass  43: suminf.    0.43750 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  44: suminf.    0.31250 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  45: suminf.    0.37687 (1) obj. -63.1 iterations 1
-Cbc0038I Pass  46: suminf.    0.31250 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  47: suminf.    0.43750 (1) obj. -68.25 iterations 2
-Cbc0038I Pass  48: suminf.    0.43750 (1) obj. -68.25 iterations 1
-Cbc0038I Pass  49: suminf.    0.43750 (1) obj. -68.25 iterations 0
-Cbc0038I Pass  50: suminf.    0.89494 (2) obj. -63.1 iterations 4
-Cbc0038I Pass  51: suminf.    0.31250 (1) obj. -68.25 iterations 3
-Cbc0038I Pass  52: suminf.    0.31250 (1) obj. -68.25 iterations 2
-Cbc0038I No solution found this major pass
-Cbc0038I Before mini branch and bound, 12 integers at bound fixed and 0 continuous
+Cbc0038I Initial state - 2 integers unsatisfied sum - 0.2375
+Cbc0038I Solution found of -69.5
+Cbc0038I Before mini branch and bound, 16 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 11 rows 18 columns, reduced to 0 rows 0 columns
 Cbc0038I Mini branch and bound did not improve solution (0.03 seconds)
-Cbc0038I After 0.03 seconds - Feasibility pump exiting with objective of -61.75 - took 0.00 seconds
-Cbc0012I Integer solution of -61.75 found by feasibility pump after 0 iterations and 0 nodes (0.03 seconds)
-Cbc0038I Full problem 10 rows 16 columns, reduced to 2 rows 2 columns
-Cbc0001I Search completed - best objective -61.75, took 0 iterations and 0 nodes (0.03 seconds)
-Cbc0035I Maximum depth 0, 9 variables fixed on reduced cost
-Cuts at root node changed objective from -68.25 to -27.75
-Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Cbc0038I Round again with cutoff of -70
+Cbc0038I Reduced cost fixing fixed 5 variables on major pass 2
+Cbc0038I Pass   1: suminf.    0.01389 (1) obj. -70 iterations 7
+Cbc0038I Pass   2: suminf.    0.10000 (1) obj. -73.1 iterations 1
+Cbc0038I Pass   3: suminf.    0.10000 (1) obj. -71.5 iterations 2
+Cbc0038I Pass   4: suminf.    0.50000 (2) obj. -70 iterations 4
+Cbc0038I Pass   5: suminf.    0.29167 (1) obj. -70 iterations 5
+Cbc0038I Pass   6: suminf.    0.37500 (1) obj. -73 iterations 1
+Cbc0038I Pass   7: suminf.    1.03333 (3) obj. -70 iterations 5
+Cbc0038I Pass   8: suminf.    0.75000 (2) obj. -70 iterations 1
+Cbc0038I Pass   9: suminf.    0.75000 (2) obj. -70 iterations 0
+Cbc0038I Pass  10: suminf.    0.50000 (2) obj. -70 iterations 2
+Cbc0038I Pass  11: suminf.    0.50000 (2) obj. -70 iterations 1
+Cbc0038I Pass  12: suminf.    0.80460 (4) obj. -70 iterations 5
+Cbc0038I Pass  13: suminf.    0.52083 (2) obj. -70 iterations 2
+Cbc0038I Pass  14: suminf.    0.25000 (1) obj. -73.5 iterations 3
+Cbc0038I Pass  15: suminf.    0.15278 (1) obj. -70 iterations 2
+Cbc0038I Pass  16: suminf.    0.15278 (1) obj. -70 iterations 0
+Cbc0038I Pass  17: suminf.    0.15278 (1) obj. -70 iterations 0
+Cbc0038I Pass  18: suminf.    0.15278 (1) obj. -70 iterations 0
+Cbc0038I Pass  19: suminf.    0.15278 (1) obj. -70 iterations 0
+Cbc0038I Pass  20: suminf.    0.42500 (2) obj. -70 iterations 5
+Cbc0038I Pass  21: suminf.    0.28571 (2) obj. -74 iterations 6
+Cbc0038I Pass  22: suminf.    0.01389 (1) obj. -70 iterations 6
+Cbc0038I Pass  23: suminf.    0.10000 (1) obj. -73.1 iterations 1
+Cbc0038I Pass  24: suminf.    0.10000 (1) obj. -71.5 iterations 3
+Cbc0038I Pass  25: suminf.    0.03175 (2) obj. -70 iterations 4
+Cbc0038I Pass  26: suminf.    0.50000 (2) obj. -70 iterations 5
+Cbc0038I Pass  27: suminf.    0.50000 (2) obj. -70 iterations 0
+Cbc0038I Pass  28: suminf.    0.29167 (1) obj. -70 iterations 5
+Cbc0038I Pass  29: suminf.    0.37500 (1) obj. -73 iterations 1
+Cbc0038I Pass  30: suminf.    1.03333 (3) obj. -70 iterations 4
+Cbc0038I No solution found this major pass
+Cbc0038I Before mini branch and bound, 8 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 11 rows 18 columns, reduced to 7 rows 9 columns
+Cbc0038I Mini branch and bound did not improve solution (0.03 seconds)
+Cbc0038I After 0.03 seconds - Feasibility pump exiting with objective of -69.5 - took 0.00 seconds
+Cbc0012I Integer solution of -69.5 found by feasibility pump after 0 iterations and 0 nodes (0.03 seconds)
+Cbc0006I The LP relaxation is infeasible or too expensive
+Cbc0013I At root node, 0 cuts changed objective from -74 to -74 in 1 passes
+Cbc0014I Cut generator 0 (Probing) - 1 row cuts average 0.0 elements, 4 column cuts (4 active)  in 0.000 seconds - new frequency is 1
+Cbc0014I Cut generator 1 (Gomory) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 2 (Knapsack) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 3 (Clique) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 4 (MixedIntegerRounding2) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 5 (FlowCover) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 6 (TwoMirCuts) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 7 (ZeroHalf) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0001I Search completed - best objective -69.5, took 0 iterations and 0 nodes (0.03 seconds)
+Cbc0035I Maximum depth 0, 5 variables fixed on reduced cost
+Cuts at root node changed objective from -74 to -74
+Probing was tried 1 times and created 5 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
 Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
 Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
 Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
@@ -8086,27 +8042,28 @@ ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after addin
 
 Result - Optimal solution found
 
-Objective value:                61.75000000
+Objective value:                69.50000000
 Enumerated nodes:               0
 Total iterations:               0
 Time (CPU seconds):             0.01
 Time (Wallclock seconds):       0.03
 
 Option for printingOptions changed from normal to all
-Total time (CPU seconds):       0.01   (Wallclock seconds):       0.03
+Total time (CPU seconds):       0.01   (Wallclock seconds):       0.04
 
 
 Optimal Feature Selection:
 --------------------------------------------------
 Selected Features:
-- Feature A
+- Feature A (compressed)
 - Feature B
+- Feature C
 - Feature H (compressed)
-- Feature J (compressed)
+- Feature J (storage-efficient)
 
-Total Business Value: 61.75
-CPU Load: 71.5
-Storage Load: 100.0
+Total Business Value: 69.5
+CPU Load: 96.0
+Storage Load: 95.0
 </pre>
 </div>
 </div>
@@ -8123,14 +8080,15 @@ Storage Load: 100.0
 <p>Optimal Feature Selection:</p>
 <p>Selected Features:</p>
 <ul>
-<li>Feature A</li>
+<li>Feature A (compressed)</li>
 <li>Feature B</li>
+<li>Feature C</li>
 <li>Feature H (compressed)</li>
-<li>Feature J (compressed)</li>
+<li>Feature J (storage-efficient)</li>
 </ul>
-<p>Optimal Business Value Score: 61.75<br/>
-CPU Load: 71.5<br/>
-Storage Load: 100.0</p>
+<p>Total Business Value: 69.5<br/>
+CPU Load: 96.0<br/>
+Storage Load: 95.0</p>
 </div>
 </div>
 </div>
