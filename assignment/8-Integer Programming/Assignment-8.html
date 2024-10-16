@@ -7814,26 +7814,20 @@ $$
 \sum Normal - Feature\ compression + Storage\ efficient\ algorithm
 \leq 100
 $$$$
-\sum_{i} (x_i \cdot CPU_i)
-- (c_i \cdot x_i \cdot 0.5 CPU_i)
-+ (s_i \cdot x_i \cdot 2 CPU_i)
-\leq 100
-$$$$
 \therefore
-\sum_{i} (x_i \cdot CPU_i)(1-0.5c_i+2s_i)
+\sum_{i} (x_i \cdot CPU_i)
+- (c_i \cdot 0.5 CPU_i)
++ (s_i \cdot 2 CPU_i)
 \leq 100
 $$<p>; $CPU_i$ is CPU Load of feature i</p>
 <ul>
 <li>Total Storage Load</li>
 </ul>
 $$
-\sum_{i} (x_i \cdot Storage_i)
-- (c_i \cdot x_i \cdot 0.5Storage_i)
-- (s_i \cdot x_i \cdot 0.5Storage_i)
-\leq 100
-$$$$
 \therefore
-\sum_{i} (x_i \cdot Storage_i)(1-0.5c_i-0.5s_i)
+\sum_{i} (x_i \cdot Storage_i)
+- (c_i \cdot 0.5Storage_i)
+- (s_i \cdot 0.5Storage_i)
 \leq 100
 $$<p>; $Storage_i$ is storage load of feature i</p>
 <ul>
