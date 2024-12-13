@@ -1,0 +1,45 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{graphicx}
+\geometry{margin=1in}
+
+\begin{document}
+
+\section*{Where}
+\begin{itemize}
+    \item \( s_x = 3.62771 \)\ : Sample standard deviation of group \( A \)
+    \item \( s_y = 3.29539 \)\ : Sample standard deviation of group \( B \)
+    \item \( \mu_0 = 0 \)\ : The hypothesized difference in population means
+    \item \( \bar{x} = 5.53125 \)\ : Sample mean of group \( x \)
+    \item \( \bar{y} = 6.33333 \)\ : Sample mean of group \( y \)
+    \item \( n = 32 \)\ : Sample size of group \( x \)
+    \item \( m = 39 \)\ : Sample size of group \( y \)
+\end{itemize}
+
+\begin{flalign*}
+s_p^2 &= \frac{(n-1)s_x^2 + (m-1)s_y^2}{n+m-2} \\
+      &= \frac{(32-1) \cdot 3.62771^2 + (39-1) \cdot 3.29539^2}{32+39-2} \biggl( \frac{1}{32} + \frac{1}{39} \biggr) \\
+      &= 0.82257 &&
+\end{flalign*}
+
+\begin{flalign*}
+t &= \frac{\bar{x} - \bar{y} - \mu_0}{s_p} \\
+  &= \frac{5.53125 - 6.33333 - 0}{0.82257} \\
+  &= -0.9751 &&
+\end{flalign*}
+
+\begin{flalign*}
+df &= n + m - 2 \\
+   &= 32 + 39 - 2 \\
+   &= 69 &&
+\end{flalign*}
+\\
+\(
+\therefore \ \text{p-value} = P(T \leq t) = P(T \leq -0.9751) = 0.1665
+\)
+
+\end{document}
